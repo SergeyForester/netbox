@@ -6,7 +6,7 @@ from ipam.models import IPAddress, Prefix, VLAN, VRF
 from netbox.views import generic
 from virtualization.models import VirtualMachine, Cluster
 from . import filters, forms, tables
-from .models import Tenant, TenantGroup
+from .models import Tenant, TenantGroup, Supervisor
 
 
 #
@@ -111,3 +111,23 @@ class TenantBulkDeleteView(generic.BulkDeleteView):
     queryset = Tenant.objects.prefetch_related('group')
     filterset = filters.TenantFilterSet
     table = tables.TenantTable
+
+
+# ##########################################
+
+class TenantSupervisorView(generic.ObjectView):
+    queryset = Supervisor.objects.all()
+    filterset = filters.SupervisorFilterSet
+    filterset_form = forms.SupervisorFilterForm
+    table = tables.TenantTable
+
+
+class TenantSupervisorEditView(generic.ObjectEditView):
+    queryset = Tenant.objects.all()
+    model_form = forms.TenantForm
+    template_name = 'tenancy/supervisor_edit.html'
+
+
+class TenantSupervisorDeleteView(generic.ObjectDeleteView):
+    queryset = Tenant.objects.all()
+

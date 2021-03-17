@@ -79,6 +79,18 @@
                     <td>Description</td>
                     <td>{{ object.description|placeholder }}</td>
                 </tr>
+                <tr>
+                    <td>Supervisor</td>
+                    <td>
+                        {% if object.supervisor %}
+                            <a href="{{ object.supervisor.get_absolute_url }}">
+                                {{ object.supervisor.full_name }}
+                            </a>
+                        {% else %}
+                            <span class="text-muted">None</span>
+                        {% endif %}
+                    </td>
+                </tr>
             </table>
         </div>
         {% include 'inc/custom_fields_panel.html' %}

@@ -2,7 +2,7 @@ from django.urls import path
 
 from extras.views import ObjectChangeLogView
 from . import views
-from .models import Tenant, TenantGroup
+from .models import Tenant, TenantGroup, Supervisor
 
 app_name = 'tenancy'
 urlpatterns = [
@@ -26,5 +26,10 @@ urlpatterns = [
     path('tenants/<slug:slug>/edit/', views.TenantEditView.as_view(), name='tenant_edit'),
     path('tenants/<slug:slug>/delete/', views.TenantDeleteView.as_view(), name='tenant_delete'),
     path('tenants/<slug:slug>/changelog/', ObjectChangeLogView.as_view(), name='tenant_changelog', kwargs={'model': Tenant}),
+
+    path('supervisor/', views.TenantSupervisorView.as_view(), name='supervisors'),
+    path('supervisor/<slug:slug>/edit/', views.TenantSupervisorView.as_view(), name='supervisor_edit'),
+    path('supervisor/<slug:slug>/delete/', views.TenantSupervisorDeleteView.as_view(), name='supervisor_delete'),
+    path('supervisor/<slug:slug>/changelog/', ObjectChangeLogView.as_view(), name='supervisor_changelog', kwargs={"model", Supervisor}),
 
 ]

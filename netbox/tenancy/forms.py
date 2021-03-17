@@ -8,7 +8,7 @@ from utilities.forms import (
     BootstrapMixin, CommentField, CSVModelChoiceField, CSVModelForm, DynamicModelChoiceField,
     DynamicModelMultipleChoiceField, SlugField, TagFilterField,
 )
-from .models import Tenant, TenantGroup
+from .models import Tenant, TenantGroup, Supervisor
 
 
 #
@@ -110,6 +110,19 @@ class TenantFilterForm(BootstrapMixin, CustomFieldFilterForm):
     )
     tag = TagFilterField(model)
 
+
+class SupervisorFilterForm(BootstrapMixin, CustomFieldFilterForm):
+    model = Supervisor
+    q = forms.CharField(
+        required=False,
+        label='Search'
+    )
+    supervisor = DynamicModelMultipleChoiceField(
+        queryset=Tenant.objects.all(),
+        to_field_name='slug',
+        required=False,
+        null_option='None'
+    )
 
 #
 # Form extensions

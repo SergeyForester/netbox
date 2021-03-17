@@ -3,13 +3,13 @@ from django.db.models import Q
 
 from extras.filters import CustomFieldModelFilterSet, CreatedUpdatedFilterSet
 from utilities.filters import BaseFilterSet, NameSlugSearchFilterSet, TagFilter, TreeNodeMultipleChoiceFilter
-from .models import Tenant, TenantGroup
-
+from .models import Tenant, TenantGroup, Supervisor
 
 __all__ = (
     'TenancyFilterSet',
     'TenantFilterSet',
     'TenantGroupFilterSet',
+    'SupervisorFilterSet'
 )
 
 
@@ -69,6 +69,11 @@ class TenancyFilterSet(django_filters.FilterSet):
     """
     An inheritable FilterSet for models which support Tenant assignment.
     """
+    q = django_filters.CharFilter(
+        method='search',
+        label='Search',
+    )
+
     tenant_group_id = TreeNodeMultipleChoiceFilter(
         queryset=TenantGroup.objects.all(),
         field_name='tenant__group',
@@ -92,3 +97,40 @@ class TenancyFilterSet(django_filters.FilterSet):
         to_field_name='slug',
         label='Tenant (slug)',
     )
+
+    slug = django_filters.TreeNodeMultipleChoiceFilter(
+        queryset=Supervisor.objects.all(),
+        field_name='slug',
+        lookup_expr='in',
+        label='Supervisor (Slug)',
+    )
+
+
+class SupervisorFilterSet(django_filters.FilterSet):
+    """
+    An inheritable FilterSet for models which support Tenant assignment.
+    """
+    tenant_group_id = TreeNodeMultipleChoiceFilter(
+        queryset=TenantGroup.objects.all(),
+        field_name='tenant__group',
+        lookup_expr='in',
+        label='Tenant Group (ID)',
+    )
+    tenant_group = TreeNodeMultipleChoiceFilter(
+        queryset=TenantGroup.objects.all(),
+        field_name='tenant__group',
+        to_field_name='slug',
+        lookup_expr='in',
+        label='Tenant Group (slug)',
+    )
+    tenant_id = django_filters.ModelMultipleChoiceFilter(
+        queryset=Tenant.objects.all(),
+        label='Tenant (ID)',
+    )
+    tenant = django_filters.ModelMultipleChoiceFilter(
+        queryset=Tenant.objects.all(),
+        field_name='tenant__slug',
+        to_field_name='slug',
+        label='Tenant (slug)',
+    )
+

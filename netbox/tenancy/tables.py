@@ -58,3 +58,16 @@ class TenantTable(BaseTable):
         model = Tenant
         fields = ('pk', 'name', 'slug', 'group', 'description', 'tags')
         default_columns = ('pk', 'name', 'group', 'description')
+
+
+class SupervisorTable(BaseTable):
+    pk = ToggleColumn()
+    name = tables.LinkColumn()
+    tags = TagColumn(
+        url_name='tenancy:tenant_list'
+    )
+
+    class Meta(BaseTable.Meta):
+        model = Tenant
+        fields = ('pk', 'name', 'slug', 'group', 'description', 'tags')
+        default_columns = ('pk', 'name', 'group', 'description')
